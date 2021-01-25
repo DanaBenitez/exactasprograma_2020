@@ -1,6 +1,7 @@
 import numpy as np
 import random
 
+#particula rebota dentro de los limites del eje X y del eje Y
 def rebotar (pos, vel, minimo, maximo):
     if pos > maximo:
         vel = -vel
@@ -20,16 +21,19 @@ def mover_particula (pos_x, pos_y, vel_x, vel_y, dt, x_min, x_max, y_min, y_max)
         i= i+1
     return pos_x, pos_y, vel_x, vel_y
 
+#toma un archivo y la posicion de la particula y escribe un frame 
 def escribir_frame(archivo, pos_x, pos_y, nparts):
     print (nparts,file = archivo )
     print (" ",file = archivo )
     for i in range (nparts):
         print ("6", pos_x[i] , pos_y[i] , "0", file = archivo )
-    
+        
+#toma la posicion del eje X y del eje Y de dos paticular y calcula su distancia al cuadrado    
 def calcula_distcuadrada(x_1, y_1, x_2, y_2):
     dist_cuadrada= np.sqrt ((x_1 - x_2)**2 + (y_1 - y_2)**2)
     return dist_cuadrada
 
+#dada las posiciones de las particulas determina las fuerzas aplicada en casa una de ellas 
 def calcular_fuerzas(pos_x, pos_y):
     Fx=[0]*len(pos_x)
     Fy=[0]*len(pos_y)
@@ -40,6 +44,7 @@ def calcular_fuerzas(pos_x, pos_y):
               Fy[i] += 4 * k * (pos_y[i] - pos_y[j]) / calcula_distcuadrada(pos_x[i], pos_y[i], pos_x[j], pos_y[j])**3
     return Fx, Fy
               
+#dadas todas las velocidades y fuerzas devuekve un par con las velocidades actualizadas    
 def aplicar_fuerzas(vel_x, vel_y, Fx, Fy, masas, dt):
     for i in range (len(masas)): 
         vel_x= vel_x + (Fx[i] / masas[i])* dt
